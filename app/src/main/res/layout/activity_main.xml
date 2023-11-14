@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="IP"
+        android:text="192.168.0.25"
         android:textColor="#FFFFFF"
         android:textColorHighlight="#E91E63"
         android:textColorHint="#000000"
@@ -24,6 +24,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.673" />
+
+    <Button
+        android:id="@+id/connect"
+        android:layout_width="172dp"
+        android:layout_height="73dp"
+        android:backgroundTint="#AC0050"
+        android:text="Connect"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/send"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.944" />
 
     <Button
         android:id="@+id/send"
@@ -37,7 +51,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.756" />
+        app:layout_constraintVertical_bias="0.872" />
 
     <EditText
         android:id="@+id/messageText"
@@ -49,7 +63,7 @@
         android:textColor="#FFFFFF"
         android:textColorHighlight="#E91E63"
         android:textColorLink="#E91E63"
-        app:layout_constraintBottom_toTopOf="@+id/send"
+        app:layout_constraintBottom_toTopOf="@+id/connect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
