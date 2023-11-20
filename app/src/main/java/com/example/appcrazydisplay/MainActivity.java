@@ -45,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
         logo.getLayoutParams().width = 190*2;
         logo.getLayoutParams().height = 247*2;
 
+
+
+
+
         data = updateMessages();
         data.forEach(message -> {
             Log.i("MSSJ", message.text);
@@ -184,10 +188,11 @@ class Message implements Serializable{
     Date date;
     Message(String text){
         this.text = text;
-        Date date = new Date();
+        this.date = new Date();
     }
 
     public String toString() {
         return text;
     }
+
 }
