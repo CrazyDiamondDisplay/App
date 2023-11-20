@@ -2,16 +2,23 @@ package com.example.appcrazydisplay;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.io.EOFException;
 import java.io.FileInputStream;
@@ -45,14 +52,9 @@ public class MainActivity extends AppCompatActivity {
         logo.getLayoutParams().width = 190*2;
         logo.getLayoutParams().height = 247*2;
 
-
-
-
+        loginAlert();
 
         data = updateMessages();
-        data.forEach(message -> {
-            Log.i("MSSJ", message.text);
-        });
 
         EditText id = (EditText) findViewById(R.id.ipText);
         EditText mssg = (EditText) findViewById(R.id.messageText);
@@ -180,6 +182,34 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.i("ARRARRRAR", String.valueOf(messages.size()));
         return messages;
+    }
+
+    public void loginAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogStyle);
+        LayoutInflater inflater = getLayoutInflater();
+
+        View dialogView = inflater.inflate(R.layout.dialog_signin, null);
+        builder.setView(dialogView);
+
+        EditText usernameEditText = dialogView.findViewById(R.id.name);
+        EditText passwordEditText = dialogView.findViewById(R.id.pass);
+
+        builder.setTitle("Sign In")
+                .setPositiveButton("Sign in", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        String username = usernameEditText.getText().toString();
+                        String password = passwordEditText.getText().toString();
+
+                        if(!username.equals("admin") || !password.equals("admin")){
+                            Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                            loginAlert();
+                        }
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
 

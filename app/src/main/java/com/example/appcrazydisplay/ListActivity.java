@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -31,17 +33,25 @@ public class ListActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.list);
         ArrayList<Message> data = (ArrayList<Message>) getIntent().getSerializableExtra("data");
 
+        /*
+        if(data.size() > 1){
+            Collections.sort(data, new Comparator<Message>() {
+                @Override
+                public int compare(Message m1, Message m2) {
+                    return m2.date.compareTo(m1.date);
+                }
+            });
+        }
+        */
+
         ArrayAdapter<Message> adapter = new ArrayAdapter<Message>( this, R.layout.list_item, data)
         {
             @Override
             public View getView(int pos, View convertView, ViewGroup container)
             {
-                // getView ens construeix el layout i hi "pinta" els valors de l'element en la posició pos
                 if( convertView==null ) {
-                    // inicialitzem l'element la View amb el seu layout
                     convertView = getLayoutInflater().inflate(R.layout.list_item, container, false);
                 }
-                // "Pintem" valors (també quan es refresca)
                 ((TextView) convertView.findViewById(R.id.mssg)).setText(getItem(pos).text);
                 return convertView;
             }
