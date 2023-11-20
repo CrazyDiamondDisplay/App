@@ -29,8 +29,10 @@
         </FrameLayout>
 
         <ListView
+            android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/background" />
+            android:background="@color/background"
+            android:padding="50px" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
