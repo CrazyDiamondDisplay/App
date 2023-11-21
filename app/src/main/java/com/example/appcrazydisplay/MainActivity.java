@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MainActivity extends AppCompatActivity {
     boolean connected = true;
     ArrayList<Message> data;
-    ClientApp clientApp;
+    static ClientApp clientApp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

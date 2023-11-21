@@ -3,6 +3,7 @@ package com.example.appcrazydisplay;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -53,12 +54,18 @@ public class ListActivity extends AppCompatActivity {
                     convertView = getLayoutInflater().inflate(R.layout.list_item, container, false);
                 }
                 ((TextView) convertView.findViewById(R.id.mssg)).setText(getItem(pos).text);
+                String text =  ((TextView) convertView.findViewById(R.id.mssg)).getText().toString();
+                ((TextView) convertView.findViewById(R.id.mssg)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MainActivity.clientApp.send(text);
+                    }
+                });
                 return convertView;
             }
 
         };
         listView.setAdapter(adapter);
-
     }
 
 }
