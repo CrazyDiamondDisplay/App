@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.EOFException;
@@ -31,12 +33,21 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoginCallback{
     boolean connected = true;
+    private LoginCallback loginCallback = this;
+
     ArrayList<Message> data;
     static ClientApp clientApp;
+
+    Button connect;
+    Button send;
+    Button list;
+
+    static boolean validUser = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,38 +60,35 @@ public class MainActivity extends AppCompatActivity {
         }
         ImageView logo = (ImageView) findViewById(R.id.imageView);
         logo.setImageResource(R.drawable.morioh);
-        logo.getLayoutParams().width = 190*2;
-        logo.getLayoutParams().height = 247*2;
-
-        loginAlert();
+        logo.getLayoutParams().width = 190 * 2;
+        logo.getLayoutParams().height = 247 * 2;
 
         data = updateMessages();
 
         EditText id = (EditText) findViewById(R.id.ipText);
         EditText mssg = (EditText) findViewById(R.id.messageText);
-        Button connect = (Button) findViewById(R.id.connect);
-        Button send = (Button) findViewById(R.id.send);
-        Button list = (Button) findViewById(R.id.buttonList);
+        connect = (Button) findViewById(R.id.connect);
+        send = (Button) findViewById(R.id.send);
+        list = (Button) findViewById(R.id.buttonList);
+
         send.setEnabled(false);
         list.setEnabled(false);
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(connected){
-                    send.setEnabled(true);
-                    list.setEnabled(true);
-                    connected = false;
-                    connect.setText("Disconnect");
+                if (connected) {
                     String idServer = id.getText().toString();
                     URI uri = null;
                     try {
                         uri = new URI("ws://" + idServer + ":8888");
-                        clientApp = new ClientApp(uri);
+                        clientApp = new ClientApp(uri, MainActivity.this);
+                        loginAlert(MainActivity.this);
+                        connected = false;
 
                     } catch (URISyntaxException e) {
                         throw new RuntimeException(e);
                     }
-                }else{
+                } else {
                     connected = true;
                     connect.setText("Connect");
                     clientApp.close();
@@ -104,15 +112,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String message = mssg.getText().toString();
                 final AtomicBoolean exist = new AtomicBoolean(false);
-                if(!data.isEmpty()){
+                if (!data.isEmpty()) {
                     data.forEach(message1 -> {
-                        if (message1.text.equals(message)){
+                        if (message1.text.equals(message)) {
                             message1.date = new Date();
                             exist.set(true);
                         }
                     });
                 }
-                if(!exist.get()) saveMessage(message, data);
+                if (!exist.get()) saveMessage(message, data);
 
                 clientApp.send(message);
             }
@@ -184,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         return messages;
     }
 
-    public void loginAlert(){
+    public void loginAlert(LoginCallback callback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialogStyle);
         LayoutInflater inflater = getLayoutInflater();
 
@@ -200,16 +208,34 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         String username = usernameEditText.getText().toString();
                         String password = passwordEditText.getText().toString();
-
-                        if(!username.equals("admin") || !password.equals("admin")){
-                            Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
-                            loginAlert();
-                        }
+                        String jsonString = "{\"type\": \"login\", \"user\":\"" + username + "\", \"pass\": \"" + password + "\"}";
+                        clientApp.send(jsonString);
                     }
                 });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+
+    public void onLoginResult(boolean isValid) {
+        if (!isValid) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    connect.setText("Disconnect");
+                    send.setEnabled(true);
+                    list.setEnabled(true);
+                }
+            });
+        }
     }
 }
 
@@ -224,5 +250,8 @@ class Message implements Serializable{
     public String toString() {
         return text;
     }
+}
 
+interface LoginCallback {
+    void onLoginResult(boolean isValid);
 }
