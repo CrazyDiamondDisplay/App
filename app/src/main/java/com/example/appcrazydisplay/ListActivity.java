@@ -2,7 +2,9 @@ package com.example.appcrazydisplay;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +61,22 @@ public class ListActivity extends AppCompatActivity {
                 ((TextView) convertView.findViewById(R.id.mssg)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MainActivity.clientApp.send(text);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
+                        builder.setMessage("Do you want to send it?")  // Establece el mensaje
+                                .setTitle("Confirmation")          // Establece el título del cuadro de diálogo
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        MainActivity.clientApp.send("{\"type\": \"mssg\", \"text\":\""+text+"\"}");
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Toast.makeText(ListActivity.this, "Not sent", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }
                 });
                 return convertView;

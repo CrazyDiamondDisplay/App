@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements LoginCallback{
                 }
                 if (!exist.get()) saveMessage(message, data);
 
-                clientApp.send(message);
+                clientApp.send("{\"type\": \"mssg\", \"text\":\""+message+"\"}");
             }
         });
     }
