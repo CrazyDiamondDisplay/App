@@ -120,4 +120,19 @@
         app:layout_constraintTop_toTopOf="@+id/frameLayout"
         app:layout_constraintVertical_bias="0.166" />
 
+    <Button
+        android:id="@+id/buttonImgs"
+        android:layout_width="79dp"
+        android:layout_height="42dp"
+        android:backgroundTint="@color/appColor"
+        android:text="Img"
+        android:textColorHighlight="#AC0050"
+        android:textColorLink="#AC00FF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout"
+        app:layout_constraintVertical_bias="0.165" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

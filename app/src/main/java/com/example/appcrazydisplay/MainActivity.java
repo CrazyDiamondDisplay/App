@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements LoginCallback{
     Button send;
     Button list;
 
+    Button img;
+
     static boolean validUser = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +72,11 @@ public class MainActivity extends AppCompatActivity implements LoginCallback{
         connect = (Button) findViewById(R.id.connect);
         send = (Button) findViewById(R.id.send);
         list = (Button) findViewById(R.id.buttonList);
+        img = (Button) findViewById(R.id.buttonImgs);
 
         send.setEnabled(false);
         list.setEnabled(false);
+        img.setEnabled(false);
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements LoginCallback{
                     clientApp.close();
                     send.setEnabled(false);
                     list.setEnabled(false);
+                    img.setEnabled(false);
                 }
             }
         });
@@ -102,6 +107,15 @@ public class MainActivity extends AppCompatActivity implements LoginCallback{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ListActivity.class);
+                intent.putExtra("data", data);
+                startActivity(intent);
+            }
+        });
+
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, imgSel.class);
                 intent.putExtra("data", data);
                 startActivity(intent);
             }
@@ -233,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements LoginCallback{
                     connect.setText("Disconnect");
                     send.setEnabled(true);
                     list.setEnabled(true);
+                    img.setEnabled(true);
                 }
             });
         }
