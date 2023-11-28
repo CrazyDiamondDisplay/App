@@ -60,11 +60,9 @@ public class imgSel extends AppCompatActivity {
                                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                                 byte[] byteArray = byteArrayOutputStream .toByteArray();
 
-                                String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                                String nuevaCadena = encodedImage.replace("\n", "").replace("\r", "");
-                                Log.i("WWWWWWW", "{\"type\": \"img\", \"img\":\" "+nuevaCadena+"\"}");
+                                String encodedImage = Base64.encodeToString(byteArray, Base64.NO_WRAP);
 
-                                MainActivity.clientApp.send("{\"type\": \"img\", \"image\": \""+nuevaCadena+"\" }");
+                                MainActivity.clientApp.send("{\"type\": \"img\", \"image\": \""+encodedImage+"\", \"ext\": \"jpg\"}");
                             }
                         });
                     }
@@ -93,11 +91,10 @@ public class imgSel extends AppCompatActivity {
                                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                                 byte[] byteArray = outputStream.toByteArray();
-                                String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
+                                String encodedImage = Base64.encodeToString(byteArray, Base64.NO_WRAP);
                                 //Log.i("WWWWWWW", "{\"type\": \"img\", \"img\":\" "+encodedImage+"\"}");
 
-                                MainActivity.clientApp.send("{\"type\": \"img\", \"image\": \""+encodedImage+"\" }");
+                                MainActivity.clientApp.send("{\"type\": \"img\", \"image\": \""+encodedImage+"\", \"ext\": \"jpg\"}");
                             }
                         });
                     }
@@ -126,8 +123,8 @@ public class imgSel extends AppCompatActivity {
                                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
                                 byte[] byteArray = outputStream.toByteArray();
-                                String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                                MainActivity.clientApp.send("{\"type\": \"img\", \"image\": \""+encodedImage+"\" }");
+                                String encodedImage = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+                                MainActivity.clientApp.send("{\"type\": \"img\", \"image\": \""+encodedImage+"\", \"ext\": \"png\"}");
                             }
                         });
                     }
